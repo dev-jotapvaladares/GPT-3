@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <title>F2F</title>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+      /* 
+      Cópia do reset.css
+      http://meyerweb.com/eric/tools/css/reset/ 
+      v2.0 | 20110126
+      License: none (public domain)
+      */
+
+      html, body, div, span, applet, object, iframe,
+      h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+      a, abbr, acronym, address, big, cite, code,
+      del, dfn, em, img, ins, kbd, q, s, samp,
+      small, strike, strong, sub, sup, tt, var,
+      b, u, i, center,
+      dl, dt, dd, ol, ul, li,
+      fieldset, form, label, legend,
+      table, caption, tbody, tfoot, thead, tr, th, td,
+      article, aside, canvas, details, embed, 
+      figure, figcaption, footer, header, hgroup, 
+      menu, nav, output, ruby, section, summary,
+      time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+      }
+      /* HTML5 display-role reset for older browsers */
+      article, aside, details, figcaption, figure, 
+      footer, header, hgroup, menu, nav, section {
+        display: block;
+      }
+      body {
+        line-height: 1;
+      }
+      ol, ul {
+        list-style: none;
+      }
+      blockquote, q {
+        quotes: none;
+      }
+      blockquote:before, blockquote:after,
+      q:before, q:after {
+        content: '';
+        content: none;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+
+      /* Estilização do HTML */
+      }
+      body {
+        font-family: monospace;
+      }
+      h1 {
+        background-color: #a5b5ab;
+        color: black;
+        display: inline-block;
+        width: 100%;
+        font-size: 2em;
+        margin: 0;
+        padding: 10px;
+      }
+      #chatbox {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        margin-top: 40px;
+      }
+      #userInput {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        margin-top: 40px;
+        margin-bottom: 40px;
+      }
+      #textInput {
+        width: 50%;
+        border: none;
+        font-family: monospace;
+        font-size: 17px;
+        margin-bottom: 10px;
+      }
+      .userText {
+        color: black;
+        font-family: monospace;
+        font-size: 17px;
+        text-align: right;
+        line-height: 30px;
+        margin-top: 25px;
+      }
+      .userText span {
+        background-color: #ebf3bb;
+        padding: 10px;
+      }
+      .botText {
+        color: black;
+        font-family: monospace;
+        font-size: 17px;
+        text-align: left;
+        line-height: 30px;
+        background-color: #a5b5ab ;
+      }
+      .botText span {
+        padding: 10px;
+      }
+      #tidbit {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 300px;
+      }
+      .boxed {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        border: 1px solid #949a8e;
+        background-color: #615566;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <h1>
+        AI F2F
+      </h1>
+    </center>
+    <div class="boxed">
+      <div>
+        <div id="chatbox">
+          <span><img src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-robot-5-1089411.png" alt = "Hello" width = "25"></span>
+          <span><p class="botText">
+            <span>Olá, Facer! Eu sou um AI ChatBot criado através do GPT3. Me pergunte algo!</span>
+          </p></span>
+        </div>
+        <div id="userInput">
+          <input id="textInput" type="text" name="msg" placeholder="Insira sua mensagem aqui..." />
+        </div>
+      </div>
+      <script>
+        function getBotResponse() {
+          var image = '<img src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-robot-5-1089411.png" alt = "Hello" width = "25">';
+          var rawText = $("#textInput").val();
+          var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+          $("#textInput").val("");
+          $("#chatbox").append(userHtml);
+          document
+            .getElementById("userInput")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+          $.get("/get", { msg: rawText }).done(function(data) {
+            var botHtml = image+'<p class="botText"><span>' + data + "</span></p>";
+            
+            $("#chatbox").append(botHtml);
+            document
+              .getElementById("userInput")
+              .scrollIntoView({ block: "start", behavior: "smooth" });
+          });
+        }
+        $("#textInput").keypress(function(e) {
+          if (e.which == 13) {
+            getBotResponse();
+          }
+        });
+      </script>
+    </div>
+  </body>
+</html>
